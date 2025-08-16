@@ -175,9 +175,11 @@ confirm-close-surface = false
 quit-after-last-window-closed = true
 auto-update = check
 
+
 # =====================================
 # Terminal Features
 # =====================================
+
 
 # Title
 title = "Ghostty"
@@ -189,6 +191,7 @@ working-directory = inherit
 # =====================================
 # Advanced Settings
 # =====================================
+
 
 # Custom sequences
 custom-shader = none
