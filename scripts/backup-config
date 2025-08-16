@@ -1,0 +1,271 @@
+#!/bin/bash
+
+# Configuration Backup Script
+# Backs up important configuration files and directories
+
+set -e
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Icons
+SUCCESS="✅"
+ERROR="❌"
+INFO="ℹ️"
+BACKUP="💾"
+FOLDER="📁"
+
+# Configuration
+BACKUP_BASE_DIR="$HOME/Backups"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+BACKUP_DIR="$BACKUP_BASE_DIR/config_backup_$TIMESTAMP"
+
+# Function to print colored output
+print_success() { echo -e "${GREEN}${SUCCESS} $1${NC}"; }
+print_error() { echo -e "${RED}${ERROR} $1${NC}"; }
+print_info() { echo -e "${CYAN}${INFO} $1${NC}"; }
+print_warning() { echo -e "${YELLOW}⚠️  $1${NC}"; }
+
+# Function to backup file or directory
+backup_item() {
+    local source="$1"
+    local dest_name="$2"
+    local description="$3"
+    
+    if [ -e "$source" ]; then
+        print_info "Backing up $description..."
+        cp -r "$source" "$BACKUP_DIR/$dest_name"
+        print_success "Backed up: $description"
+    else
+        print_warning "Skipped: $description (not found)"
+    fi
+}
+
+# Function to create archive
+create_archive() {
+    local archive_name="config_backup_$TIMESTAMP.tar.gz"
+    print_info "Creating compressed archive..."
+    
+    cd "$BACKUP_BASE_DIR"
+    tar -czf "$archive_name" "config_backup_$TIMESTAMP"
+    
+    if [ $? -eq 0 ]; then
+        print_success "Archive created: $BACKUP_BASE_DIR/$archive_name"
+        
+        # Remove uncompressed directory
+        rm -rf "config_backup_$TIMESTAMP"
+        print_success "Cleaned up temporary files"
+        
+        # Show archive size
+        local size=$(du -h "$archive_name" | cut -f1)
+        print_info "Archive size: $size"
+    else
+        print_error "Failed to create archive"
+        return 1
+    fi
+}
+
+# Function to show usage
+show_usage() {
+    echo -e "${CYAN}${BACKUP} Configuration Backup Script${NC}"
+    echo ""
+    echo "Usage: backup-config [options]"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help     Show this help message"
+    echo "  -a, --archive  Create compressed archive (default)"
+    echo "  -d, --dir      Keep as directory (don't compress)"
+    echo "  -l, --list     List backup contents without creating backup"
+    echo ""
+    echo "This script backs up important configuration files and directories:"
+    echo "• Shell configurations (.zshrc, .bashrc, etc.)"
+    echo "• Editor configurations (Neovim, VS Code)"
+    echo "• Terminal configurations (Ghostty, Alacritty)"
+    echo "• Git configuration"
+    echo "• SSH keys and configuration"
+    echo "• Development tool configurations"
+    echo "• Custom scripts and dotfiles"
+}
+
+# Function to list what would be backed up
+list_backup_items() {
+    echo -e "${CYAN}${FOLDER} Items to backup:${NC}"
+    echo ""
+    
+    declare -a items=(
+        "$HOME/.zshrc:Shell configuration (Zsh)"
+        "$HOME/.bashrc:Shell configuration (Bash)"
+        "$HOME/.config/zsh:Zsh configuration directory"
+        "$HOME/.config/nvim:Neovim configuration"
+        "$HOME/.config/ghostty:Ghostty terminal configuration"
+        "$HOME/.config/alacritty:Alacritty terminal configuration"
+        "$HOME/.config/tmux:Tmux configuration"
+        "$HOME/.config/git:Git configuration directory"
+        "$HOME/.gitconfig:Git global configuration"
+        "$HOME/.ssh:SSH keys and configuration"
+        "$HOME/.gnupg:GPG keys and configuration"
+        "$HOME/.config/Code:VS Code configuration"
+        "$HOME/.config/Code - Insiders:VS Code Insiders configuration"
+        "$HOME/.vscode:VS Code user configuration"
+        "$HOME/.local/share/zinit:Zsh plugin manager"
+        "$HOME/.nvm:Node Version Manager"
+        "$HOME/.cargo:Rust configuration"
+        "$HOME/.go:Go configuration"
+        "$HOME/.docker:Docker configuration"
+        "$HOME/dotfiles:Custom dotfiles"
+        "$HOME/scripts:Custom scripts"
+        "$HOME/.profile:Profile configuration"
+        "$HOME/.bashprofile:Bash profile"
+        "$HOME/.inputrc:Readline configuration"
+        "$HOME/.xinitrc:X11 initialization"
+        "$HOME/.xprofile:X11 profile"
+        "$HOME/.Xresources:X11 resources"
+    )
+    
+    for item in "${items[@]}"; do
+        IFS=':' read -r path description <<< "$item"
+        if [ -e "$path" ]; then
+            echo -e "  ${GREEN}${SUCCESS}${NC} $description"
+        else
+            echo -e "  ${YELLOW}⊘${NC} $description (not found)"
+        fi
+    done
+}
+
+# Parse command line arguments
+CREATE_ARCHIVE=true
+SHOW_LIST=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            show_usage
+            exit 0
+            ;;
+        -a|--archive)
+            CREATE_ARCHIVE=true
+            shift
+            ;;
+        -d|--dir)
+            CREATE_ARCHIVE=false
+            shift
+            ;;
+        -l|--list)
+            SHOW_LIST=true
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            show_usage
+            exit 1
+            ;;
+    esac
+done
+
+# If list option is specified, show list and exit
+if [ "$SHOW_LIST" = true ]; then
+    list_backup_items
+    exit 0
+fi
+
+echo -e "${CYAN}${BACKUP} Starting configuration backup...${NC}"
+echo -e "${CYAN}${FOLDER} Backup location: $BACKUP_DIR${NC}"
+echo ""
+
+# Create backup directory
+mkdir -p "$BACKUP_DIR"
+print_success "Created backup directory"
+
+# Create system info file
+cat > "$BACKUP_DIR/system_info.txt" << EOF
+Backup Information
+==================
+Date: $(date)
+User: $(whoami)
+Hostname: $(hostname)
+OS: $(lsb_release -ds 2>/dev/null || cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2)
+Kernel: $(uname -r)
+Shell: $SHELL
+Backup Script Version: 1.0
+
+Installed Packages:
+EOF
+
+# Add package list if pacman is available
+if command -v pacman &> /dev/null; then
+    echo "Pacman packages:" >> "$BACKUP_DIR/system_info.txt"
+    pacman -Q >> "$BACKUP_DIR/system_info.txt" 2>/dev/null
+fi
+
+print_success "Created system information file"
+
+# Backup configuration files and directories
+backup_item "$HOME/.zshrc" "zshrc" "Zsh configuration"
+backup_item "$HOME/.bashrc" "bashrc" "Bash configuration"
+backup_item "$HOME/.config/zsh" "config_zsh" "Zsh configuration directory"
+backup_item "$HOME/.config/nvim" "config_nvim" "Neovim configuration"
+backup_item "$HOME/.config/ghostty" "config_ghostty" "Ghostty terminal configuration"
+backup_item "$HOME/.config/alacritty" "config_alacritty" "Alacritty terminal configuration"
+backup_item "$HOME/.config/tmux" "config_tmux" "Tmux configuration"
+backup_item "$HOME/.config/git" "config_git" "Git configuration directory"
+backup_item "$HOME/.gitconfig" "gitconfig" "Git global configuration"
+backup_item "$HOME/.ssh" "ssh" "SSH keys and configuration"
+backup_item "$HOME/.gnupg" "gnupg" "GPG keys and configuration"
+backup_item "$HOME/.config/Code" "config_vscode" "VS Code configuration"
+backup_item "$HOME/.config/Code - Insiders" "config_vscode_insiders" "VS Code Insiders configuration"
+backup_item "$HOME/.vscode" "vscode_user" "VS Code user configuration"
+backup_item "$HOME/.local/share/zinit" "zinit" "Zsh plugin manager"
+backup_item "$HOME/.nvm" "nvm" "Node Version Manager"
+backup_item "$HOME/.cargo" "cargo" "Rust configuration"
+backup_item "$HOME/.go" "go" "Go configuration"
+backup_item "$HOME/.docker" "docker" "Docker configuration"
+backup_item "$HOME/dotfiles" "dotfiles" "Custom dotfiles"
+backup_item "$HOME/scripts" "scripts" "Custom scripts"
+backup_item "$HOME/.profile" "profile" "Profile configuration"
+backup_item "$HOME/.bash_profile" "bash_profile" "Bash profile"
+backup_item "$HOME/.inputrc" "inputrc" "Readline configuration"
+backup_item "$HOME/.xinitrc" "xinitrc" "X11 initialization"
+backup_item "$HOME/.xprofile" "xprofile" "X11 profile"
+backup_item "$HOME/.Xresources" "Xresources" "X11 resources"
+
+# Backup fonts
+if [ -d "$HOME/.local/share/fonts" ]; then
+    backup_item "$HOME/.local/share/fonts" "fonts" "User fonts"
+fi
+
+# Backup applications list
+if [ -d "$HOME/.local/share/applications" ]; then
+    backup_item "$HOME/.local/share/applications" "applications" "Custom applications"
+fi
+
+echo ""
+print_success "Configuration backup completed!"
+
+# Create archive if requested
+if [ "$CREATE_ARCHIVE" = true ]; then
+    create_archive
+    
+    echo ""
+    echo -e "${CYAN}${SUCCESS} Backup Summary:${NC}"
+    echo -e "  📦 Archive: $BACKUP_BASE_DIR/config_backup_$TIMESTAMP.tar.gz"
+    echo -e "  📅 Date: $(date)"
+    echo -e "  👤 User: $(whoami)"
+    echo -e "  🖥️  Host: $(hostname)"
+else
+    echo ""
+    echo -e "${CYAN}${SUCCESS} Backup Summary:${NC}"
+    echo -e "  📁 Directory: $BACKUP_DIR"
+    echo -e "  📅 Date: $(date)"
+    echo -e "  👤 User: $(whoami)"
+    echo -e "  🖥️  Host: $(hostname)"
+fi
+
+echo ""
+print_info "To restore configurations, extract the archive and copy files to their original locations."
+print_success "Backup completed successfully! 🎉"
