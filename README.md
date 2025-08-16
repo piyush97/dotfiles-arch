@@ -2,10 +2,10 @@
 
 > **A beautifully crafted, macOS-inspired development environment for Arch Linux**
 
-[![GitHub stars](https://img.shields.io/github/stars/piyush97/modern-dotfiles?style=social)](https://github.com/piyush97/modern-dotfiles)
+[![GitHub stars](https://img.shields.io/github/stars/piyush97/dotfiles-arch?style=social)](https://github.com/piyush97/dotfiles-arch)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Arch Linux](https://img.shields.io/badge/Arch%20Linux-1793D1?logo=arch-linux&logoColor=fff)](https://archlinux.org/)
-[![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/piyush97/modern-dotfiles)
+[![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/piyush97/dotfiles-arch)
 
 **Transform your Arch Linux into a productivity powerhouse with this carefully curated collection of dotfiles. Designed for developers who appreciate both beauty and functionality.**
 
@@ -61,7 +61,7 @@ dotfiles/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/piyush97/modern-dotfiles.git ~/.dotfiles
+git clone https://github.com/piyush97/dotfiles-arch.git ~/.dotfiles
 cd ~/.dotfiles
 ```
 
@@ -329,7 +329,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you encounter any issues or have questions:
 
 1. Check the [troubleshooting guide](docs/troubleshooting.md)
-2. Search existing [issues](https://github.com/yourusername/dotfiles/issues)
+2. Search existing [issues](https://github.com/piyush97/dotfiles/issues)
 3. Create a new issue with detailed information
 
 ---
