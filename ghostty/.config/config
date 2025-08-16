@@ -8,8 +8,6 @@
 # Use JetBrains Mono Nerd Font for better icon support
 font-family = "JetBrains Mono"
 font-size = 12
-font-weight = normal
-font-style = normal
 
 # Fallback fonts for special characters
 font-family-bold = "JetBrains Mono"
@@ -33,8 +31,6 @@ window-title-font-family = "JetBrains Mono"
 
 # Cursor
 cursor-style = block
-cursor-blink = true
-cursor-blink-interval = 1000
 
 # Scrollback
 scrollback-limit = 10000
@@ -56,24 +52,24 @@ cursor-color = #c0caf5
 cursor-text = #1a1b26
 
 # Normal colors (0-7)
-palette = 0=#15161e    # black
-palette = 1=#f7768e    # red
-palette = 2=#9ece6a    # green
-palette = 3=#e0af68    # yellow
-palette = 4=#7aa2f7    # blue
-palette = 5=#bb9af7    # magenta
-palette = 6=#7dcfff    # cyan
-palette = 7=#a9b1d6    # white
+palette = 0=#15161e
+palette = 1=#f7768e
+palette = 2=#9ece6a
+palette = 3=#e0af68
+palette = 4=#7aa2f7
+palette = 5=#bb9af7
+palette = 6=#7dcfff
+palette = 7=#a9b1d6
 
 # Bright colors (8-15)
-palette = 8=#414868    # bright black
-palette = 9=#f7768e    # bright red
-palette = 10=#9ece6a   # bright green
-palette = 11=#e0af68   # bright yellow
-palette = 12=#7aa2f7   # bright blue
-palette = 13=#bb9af7   # bright magenta
-palette = 14=#7dcfff   # bright cyan
-palette = 15=#c0caf5   # bright white
+palette = 8=#414868
+palette = 9=#f7768e
+palette = 10=#9ece6a
+palette = 11=#e0af68
+palette = 12=#7aa2f7
+palette = 13=#bb9af7
+palette = 14=#7dcfff
+palette = 15=#c0caf5
 
 # =====================================
 # macOS-like Keybindings
@@ -179,16 +175,9 @@ confirm-close-surface = false
 quit-after-last-window-closed = true
 auto-update = check
 
-# Link opening
-uri-open-cmd = xdg-open
-
 # =====================================
 # Terminal Features
 # =====================================
-
-# Bell
-audible-bell = false
-visual-bell = false
 
 # Title
 title = "Ghostty"
@@ -200,12 +189,6 @@ working-directory = inherit
 # =====================================
 # Advanced Settings
 # =====================================
-
-# Graphics
-graphics-driver = auto
-
-# Output
-output-buffer-size = 1048576
 
 # Custom sequences
 custom-shader = none
