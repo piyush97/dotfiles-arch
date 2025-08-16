@@ -1,0 +1,221 @@
+[user]
+	# Replace with your information
+	name = Piyush Mehta
+	email = me@piyushmehta.com
+	# signingkey = YOUR_GPG_KEY_ID
+
+[core]
+	editor = code-insiders --wait
+	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+	excludesfile = ~/.config/git/ignore
+	pager = delta
+	autocrlf = input
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	default = current
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+
+[rebase]
+	autoStash = true
+	autoSquash = true
+
+[merge]
+	conflictstyle = diff3
+	tool = nvim
+
+[mergetool]
+	keepBackup = false
+	prompt = false
+
+[mergetool "nvim"]
+	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[diff]
+	colorMoved = default
+	tool = nvim
+
+[difftool]
+	prompt = false
+
+[difftool "nvim"]
+	cmd = nvim -d $LOCAL $REMOTE
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	light = false
+	line-numbers = true
+	side-by-side = false
+	syntax-theme = TokyoNight
+
+[delta "decorations"]
+	commit-decoration-style = bold yellow box ul
+	file-style = bold yellow ul
+	file-decoration-style = none
+	hunk-header-decoration-style = cyan box ul
+
+[delta "line-numbers"]
+	line-numbers-left-style = cyan
+	line-numbers-right-style = cyan
+	line-numbers-minus-style = 124
+	line-numbers-plus-style = 28
+
+[color]
+	ui = true
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	commit = yellow bold
+	whitespace = red reverse
+
+[color "status"]
+	added = green
+	changed = yellow
+	untracked = cyan
+
+[alias]
+	# Basic shortcuts
+	st = status -sb
+	co = checkout
+	cob = checkout -b
+	br = branch
+	cm = commit
+	cmm = commit -m
+	ca = commit --amend
+	cane = commit --amend --no-edit
+	
+	# Add/staging
+	a = add
+	aa = add --all
+	ap = add -p
+	au = add -u
+	
+	# Diff
+	d = diff
+	ds = diff --staged
+	dc = diff --cached
+	dt = difftool
+	
+	# Fetch/Pull/Push
+	f = fetch
+	fa = fetch --all
+	pl = pull
+	ps = push
+	psf = push --force-with-lease
+	psu = push -u origin HEAD
+	
+	# Log viewing
+	l = log --oneline --graph --date=short
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+	ll = log --pretty=format:'%C(yellow)%h%Cred%d %Creset%s%Cblue [%cn]' --decorate --numstat
+	ld = log --pretty=format:'%C(yellow)%h %ad%Cred%d %Creset%s%Cblue [%cn]' --decorate --date=relative
+	lf = log --pretty=format:'%C(yellow)%h%Cred%d %Creset%s%Cblue [%cn]' --decorate --follow
+	
+	# History
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	today = log --since=midnight --author='$(git config user.name)' --oneline
+	yesterday = log --since=yesterday.midnight --until=midnight --author='$(git config user.name)' --oneline
+	
+	# Branch management
+	bd = branch -d
+	bD = branch -D
+	bm = branch -m
+	branches = branch -a
+	remotes = remote -v
+	
+	# Stash
+	s = stash
+	sp = stash pop
+	sl = stash list
+	sa = stash apply
+	sd = stash drop
+	
+	# Reset/Revert
+	unstage = reset HEAD --
+	uncommit = reset --soft HEAD~1
+	undo = reset HEAD~1 --mixed
+	amend = commit -a --amend
+	hard = reset --hard
+	
+	# Working with remotes
+	upstream = !git branch --set-upstream-to=origin/$(git symbolic-ref --short HEAD)
+	sync = !git fetch --all && git rebase origin/main
+	
+	# Cleanup
+	cleanup = !git branch --merged | grep -v '\\*\\|main\\|master\\|develop' | xargs -n 1 git branch -d
+	prune-branches = !git remote prune origin && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D
+	
+	# Finding
+	find = !git ls-files | grep -i
+	grep = grep -Ii
+	aliases = config --get-regexp alias
+	
+	# Info
+	info = !echo "== Remote URLs:" && git remote -v && echo "== Branches:" && git branch -a && echo "== Most recent commit:" && git log --max-count=1 --pretty=short
+	contributors = shortlog --summary --numbered
+	
+	# GitHub/GitLab helpers
+	pr = !gh pr create
+	prs = !gh pr list
+	issue = !gh issue create
+	issues = !gh issue list
+	
+	# Useful helpers
+	whoami = config user.email
+	root = rev-parse --show-toplevel
+	exec = "!exec "
+	ignore = !git rm -r --cached . && git add .
+	
+	# Quick save
+	save = !git add -A && git commit -m 'SAVEPOINT'
+	wip = !git add -u && git commit -m "WIP"
+	
+	# Pretty diff
+	df = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --color \"$@\" | diff-so-fancy | less --tabs=4 -RFX; }; f"
+	dfs = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --staged --color \"$@\" | diff-so-fancy | less --tabs=4 -RFX; }; f"
+
+[commit]
+	# Sign commits by default (uncomment when GPG is set up)
+	# gpgsign = true
+	verbose = true
+
+[help]
+	autocorrect = 1
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[credential]
+	helper = cache --timeout=3600
+
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+	pushInsteadOf = https://github.com/
+
+[github]
+	user = YOUR_GITHUB_USERNAME
+[url "https://github.com/"]
+	insteadOf = git@github.com:
