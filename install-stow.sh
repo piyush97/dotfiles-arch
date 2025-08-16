@@ -37,6 +37,7 @@ PACKAGES=(
     "lazygit"
     "yazi"
     "scripts"
+    "kde"
 )
 
 # Function to print colored output
@@ -408,6 +409,13 @@ if [ "$INSTALL_MODE" = true ]; then
                 if stow_package "$pkg" "Utility scripts"; then
                     # Make scripts executable
                     find "$HOME/.local/bin" -type f -exec chmod +x {} \; 2>/dev/null || true
+                    successful_packages+=("$pkg")
+                else
+                    failed_packages+=("$pkg")
+                fi
+                ;;
+            "kde")
+                if stow_package "$pkg" "KDE Plasma configuration"; then
                     successful_packages+=("$pkg")
                 else
                     failed_packages+=("$pkg")

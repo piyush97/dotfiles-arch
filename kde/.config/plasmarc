@@ -1,0 +1,11 @@
+[OSD]
+Enabled=true
+
+[PlasmaToolTips]
+Delay=700
+
+[Theme]
+name=breeze-dark
+
+[Wallpapers]
+usersWallpapers=/usr/share/wallpapers/

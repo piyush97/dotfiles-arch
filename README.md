@@ -81,7 +81,7 @@ bash install_packages.sh
 bash install-stow.sh
 
 # Or install specific packages only
-bash install-stow.sh zsh nvim tmux git
+bash install-stow.sh zsh nvim tmux git kde
 ```
 
 ### 4️⃣ **Restart & Enjoy**
@@ -122,6 +122,12 @@ exec zsh -l
 - **Ghostty** terminal with Tokyo Night theme
 - Font ligatures and emoji support
 - Optimized for development workflows
+
+### 🎨 KDE Plasma Desktop
+- **Tokyo Night** color scheme integration
+- **macOS-inspired** keyboard shortcuts and behavior
+- **Modern window management** with smooth animations
+- **Dock-style panel** with clean, minimal design
 
 ## ⚡ Key Features
 
