@@ -1,0 +1,225 @@
+# Ghostty Terminal Configuration
+# macOS-inspired settings with Tokyo Night theme
+
+# =====================================
+# Font Configuration
+# =====================================
+
+# Use JetBrains Mono Nerd Font for better icon support
+font-family = "JetBrains Mono"
+font-size = 12
+font-weight = normal
+font-style = normal
+
+# Fallback fonts for special characters
+font-family-bold = "JetBrains Mono"
+font-family-italic = "JetBrains Mono"
+font-family-bold-italic = "JetBrains Mono"
+
+# Font features
+font-feature = -liga  # Disable ligatures for better coding
+font-feature = +calt  # Enable contextual alternates
+
+# =====================================
+# Window and Appearance
+# =====================================
+
+# Window settings
+window-width = 100
+window-height = 30
+window-padding-x = 8
+window-padding-y = 8
+window-title-font-family = "JetBrains Mono"
+
+# Cursor
+cursor-style = block
+cursor-blink = true
+cursor-blink-interval = 1000
+
+# Scrollback
+scrollback-limit = 10000
+
+# =====================================
+# Tokyo Night Theme Colors
+# =====================================
+
+# Background and foreground
+background = #1a1b26
+foreground = #c0caf5
+
+# Selection
+selection-background = #33467c
+selection-foreground = #c0caf5
+
+# Cursor
+cursor-color = #c0caf5
+cursor-text = #1a1b26
+
+# Normal colors (0-7)
+palette = 0=#15161e    # black
+palette = 1=#f7768e    # red
+palette = 2=#9ece6a    # green
+palette = 3=#e0af68    # yellow
+palette = 4=#7aa2f7    # blue
+palette = 5=#bb9af7    # magenta
+palette = 6=#7dcfff    # cyan
+palette = 7=#a9b1d6    # white
+
+# Bright colors (8-15)
+palette = 8=#414868    # bright black
+palette = 9=#f7768e    # bright red
+palette = 10=#9ece6a   # bright green
+palette = 11=#e0af68   # bright yellow
+palette = 12=#7aa2f7   # bright blue
+palette = 13=#bb9af7   # bright magenta
+palette = 14=#7dcfff   # bright cyan
+palette = 15=#c0caf5   # bright white
+
+# =====================================
+# macOS-like Keybindings
+# =====================================
+
+# Command + N -> New window
+keybind = cmd+n=new_window
+
+# Command + T -> New tab
+keybind = cmd+t=new_tab
+
+# Command + W -> Close current tab/window
+keybind = cmd+w=close_surface
+
+# Command + Q -> Quit application
+keybind = cmd+q=quit
+
+# Command + , -> Open preferences
+keybind = cmd+comma=open_config
+
+# Command + [ ] -> Previous/Next tab
+keybind = cmd+shift+left_bracket=previous_tab
+keybind = cmd+shift+right_bracket=next_tab
+
+# Command + 1-9 -> Jump to tab
+keybind = cmd+1=goto_tab:1
+keybind = cmd+2=goto_tab:2
+keybind = cmd+3=goto_tab:3
+keybind = cmd+4=goto_tab:4
+keybind = cmd+5=goto_tab:5
+keybind = cmd+6=goto_tab:6
+keybind = cmd+7=goto_tab:7
+keybind = cmd+8=goto_tab:8
+keybind = cmd+9=goto_tab:9
+
+# Command + D -> Split right
+keybind = cmd+d=new_split:right
+
+# Command + Shift + D -> Split down
+keybind = cmd+shift+d=new_split:down
+
+# Command + [ ] -> Navigate splits
+keybind = cmd+left_bracket=goto_split:previous
+keybind = cmd+right_bracket=goto_split:next
+
+# Command + Option + Arrow -> Navigate splits
+keybind = cmd+alt+left=goto_split:left
+keybind = cmd+alt+right=goto_split:right
+keybind = cmd+alt+up=goto_split:up
+keybind = cmd+alt+down=goto_split:down
+
+# Command + = / - -> Font size
+keybind = cmd+equal=increase_font_size:1
+keybind = cmd+minus=decrease_font_size:1
+keybind = cmd+0=reset_font_size
+
+# Command + Enter -> Toggle fullscreen
+keybind = cmd+enter=toggle_fullscreen
+
+# Command + R -> Reload config
+keybind = cmd+r=reload_config
+
+# Command + K -> Clear screen
+keybind = cmd+k=clear_screen
+
+# Command + F -> Find
+keybind = cmd+f=text:find
+
+# Copy/Paste (standard)
+keybind = cmd+c=copy_to_clipboard
+keybind = cmd+v=paste_from_clipboard
+
+# =====================================
+# Mouse and Touch
+# =====================================
+
+# Mouse
+mouse-hide-while-typing = true
+mouse-shift-capture = true
+
+# Click to open URLs
+click-repeat-interval = 500
+copy-on-select = false
+
+# =====================================
+# Shell Integration
+# =====================================
+
+# Shell integration
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# =====================================
+# Performance and Behavior
+# =====================================
+
+# Performance
+unfocused-split-opacity = 0.8
+background-opacity = 1.0
+
+# Behavior
+confirm-close-surface = false
+quit-after-last-window-closed = true
+auto-update = check
+
+# Link opening
+uri-open-cmd = xdg-open
+
+# =====================================
+# Terminal Features
+# =====================================
+
+# Bell
+audible-bell = false
+visual-bell = false
+
+# Title
+title = "Ghostty"
+class = "ghostty"
+
+# Working directory
+working-directory = inherit
+
+# =====================================
+# Advanced Settings
+# =====================================
+
+# Graphics
+graphics-driver = auto
+
+# Output
+output-buffer-size = 1048576
+
+# Custom sequences
+custom-shader = none
+
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+
+# =====================================
+# Development Features
+# =====================================
+
+# For development workflows
+focus-follows-mouse = false
+resize-overlay = always
+resize-overlay-position = top-left
+resize-overlay-duration = 750ms
